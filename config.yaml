@@ -19,12 +19,30 @@ allowedTools:
   - get_issue
   - update_issue
   - add_issue_comment
+  - get_issue_comments
+  - search_issues
+
+  # ----- Sub-Issue Operations -----
+  - add_sub_issue
+  - list_sub_issues
+  - remove_sub_issue
 
   # ----- Pull Request Operations -----
   - create_pull_request
   - list_pull_requests
   - get_pull_request
+  - get_pull_request_diff
+  - get_pull_request_files
+  - get_pull_request_status
+  - get_pull_request_reviews
+  - get_pull_request_review_comments
   - create_pull_request_review
+  - create_and_submit_pull_request_review
+  - merge_pull_request
+  - update_pull_request
+  - update_pull_request_branch
+  - search_pull_requests
+  - request_copilot_review
 
   # ----- Branch Operations -----
   - create_branch
@@ -33,6 +51,16 @@ allowedTools:
   # ----- Commit Operations -----
   - list_commits
   - get_commit
+
+  # ----- Workflow/Actions Operations -----
+  - list_workflows
+  - list_workflow_runs
+  - list_workflow_jobs
+  - get_workflow_run
+  - get_job_logs
+
+  # ----- User Operations -----
+  - get_me
 
 # Upstream MCP server configuration
 upstream:
