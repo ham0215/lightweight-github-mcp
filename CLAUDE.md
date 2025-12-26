@@ -1,8 +1,12 @@
-# lightweight-github-mcp
+# CLAUDE.md
 
-A lightweight proxy server that wraps `@modelcontextprotocol/server-github` and exposes only whitelisted tools via YAML configuration. This dramatically reduces context consumption (100+ tools → 10-20 tools).
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Installation
+## Project Overview
+
+Lightweight GitHub MCP is a proxy server that wraps `@modelcontextprotocol/server-github` and exposes only whitelisted tools via YAML configuration. This dramatically reduces context consumption (100+ tools → 10-20 tools).
+
+## Build and Run Commands
 
 ```bash
 # Install dependencies
@@ -10,16 +14,12 @@ npm install
 
 # Build
 npm run build
-```
-
-## Usage
-
-```bash
-# Run the server
-npm start
 
 # Development mode (watch)
 npm run dev
+
+# Run the server
+npm start
 
 # Test with MCP Inspector
 npx @modelcontextprotocol/inspector node dist/index.js
@@ -69,8 +69,7 @@ These help Claude discover tools and guide users to add needed tools to the whit
 
 ## Configuration
 
-### config.yaml
-
+`config.yaml` structure:
 ```yaml
 allowedTools:
   - get_file_contents
@@ -84,22 +83,17 @@ upstream:
     - "@modelcontextprotocol/server-github"
 ```
 
-### Config File Lookup Order
-
+Config file lookup order:
 1. `CONFIG_PATH` environment variable
 2. `./config.yaml` (current directory)
 3. Project root `config.yaml`
 
 ## Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `GITHUB_PERSONAL_ACCESS_TOKEN` | Yes | GitHub Personal Access Token |
-| `CONFIG_PATH` | No | Path to config.yaml |
+- `GITHUB_PERSONAL_ACCESS_TOKEN` (required) - GitHub PAT
+- `CONFIG_PATH` (optional) - Path to config.yaml
 
 ## Claude Desktop Configuration
-
-Add the following to your Claude Desktop configuration file:
 
 ```json
 {
@@ -114,7 +108,3 @@ Add the following to your Claude Desktop configuration file:
   }
 }
 ```
-
-## License
-
-MIT
