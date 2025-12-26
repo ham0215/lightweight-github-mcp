@@ -1,0 +1,44 @@
+# =====================================================
+# Lightweight GitHub MCP Configuration File
+# =====================================================
+
+# Whitelist of tools to expose
+# Only tools listed here will be exposed to Claude
+# Meta-tools (list_all_upstream_tools, list_blocked_tools,
+# search_upstream_tools, get_tool_info) are always available
+allowedTools:
+  # ----- Repository Operations -----
+  - search_repositories
+  - get_file_contents
+  - create_or_update_file
+  - push_files
+
+  # ----- Issue Operations -----
+  - create_issue
+  - list_issues
+  - get_issue
+  - update_issue
+  - add_issue_comment
+
+  # ----- Pull Request Operations -----
+  - create_pull_request
+  - list_pull_requests
+  - get_pull_request
+  - create_pull_request_review
+
+  # ----- Branch Operations -----
+  - create_branch
+  - list_branches
+
+  # ----- Commit Operations -----
+  - list_commits
+  - get_commit
+
+# Upstream MCP server configuration
+upstream:
+  # Execution command
+  command: npx
+  # Command arguments
+  args:
+    - "-y"
+    - "@modelcontextprotocol/server-github"
