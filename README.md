@@ -1,6 +1,6 @@
 # lightweight-github-mcp
 
-A lightweight proxy server that wraps [github/github-mcp-server](https://github.com/github/github-mcp-server) (GitHub's official MCP server) and exposes only whitelisted tools via YAML configuration. This dramatically reduces context consumption (100+ tools → 10-20 tools).
+A lightweight proxy server that wraps [github/github-mcp-server](https://github.com/github/github-mcp-server) (GitHub's official MCP server) and exposes only whitelisted tools via YAML configuration. This dramatically reduces context consumption.
 
 ## Prerequisites
 
