@@ -9,6 +9,8 @@
         "--rm",
         "-e",
         "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "-e",
+        "GITHUB_TOOLSETS=context,repos,issues,pull_requests",
         "ghcr.io/github/github-mcp-server"
       ],
       "env": {
