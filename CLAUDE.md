@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Lightweight GitHub MCP is a proxy server that wraps `@modelcontextprotocol/server-github` and exposes only whitelisted tools via YAML configuration. This dramatically reduces context consumption (100+ tools → 10-20 tools).
+Lightweight GitHub MCP is a proxy server that wraps [github/github-mcp-server](https://github.com/github/github-mcp-server) (GitHub's official MCP server) and exposes only whitelisted tools via YAML configuration. This dramatically reduces context consumption (100+ tools → 10-20 tools).
+
+**Prerequisites:** Docker must be installed and running.
 
 ## Build and Run Commands
 
@@ -42,9 +44,9 @@ Claude Desktop/Code
 │         │    │MCP Client │  │
 │         │    └─────┬─────┘  │
 └─────────┼──────────┼────────┘
-          │          │ spawn child process
+          │          │ spawn Docker container
           │          ▼
-          │  @modelcontextprotocol/server-github (~100 tools)
+          │  github/github-mcp-server (Docker, ~100 tools)
           │
     Claude requests
 ```
@@ -76,11 +78,16 @@ allowedTools:
   - create_issue
   # ... only listed tools are exposed
 
+# Using github/github-mcp-server via Docker
 upstream:
-  command: npx
+  command: docker
   args:
-    - "-y"
-    - "@modelcontextprotocol/server-github"
+    - "run"
+    - "-i"
+    - "--rm"
+    - "-e"
+    - "GITHUB_PERSONAL_ACCESS_TOKEN"
+    - "ghcr.io/github/github-mcp-server"
 ```
 
 Config file lookup order:

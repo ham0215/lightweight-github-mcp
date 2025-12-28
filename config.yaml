@@ -63,10 +63,16 @@ allowedTools:
   - get_me
 
 # Upstream MCP server configuration
+# Using github/github-mcp-server (Go-based official GitHub MCP)
+# https://github.com/github/github-mcp-server
 upstream:
-  # Execution command
-  command: npx
+  # Execution command (Docker)
+  command: docker
   # Command arguments
   args:
-    - "-y"
-    - "@modelcontextprotocol/server-github"
+    - "run"
+    - "-i"
+    - "--rm"
+    - "-e"
+    - "GITHUB_PERSONAL_ACCESS_TOKEN"
+    - "ghcr.io/github/github-mcp-server"

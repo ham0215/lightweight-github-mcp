@@ -2,14 +2,19 @@
 
 ## Overview
 
-GitHub MCP (`@modelcontextprotocol/server-github`) exposes approximately 100 tools, consuming a significant amount of context window. This project implements a lightweight proxy server that wraps the original GitHub MCP and exposes only whitelisted tools.
+GitHub MCP ([github/github-mcp-server](https://github.com/github/github-mcp-server)) exposes approximately 100 tools, consuming a significant amount of context window. This project implements a lightweight proxy server that wraps the official GitHub MCP via Docker and exposes only whitelisted tools.
 
 ## Goals
 
 - Significant reduction in context consumption (100 tools → 10-20 tools)
 - Simple YAML-based configuration
-- Transparent proxy to the original MCP
+- Transparent proxy to the official GitHub MCP (via Docker)
 - Easy setup in local environments
+
+## Prerequisites
+
+- Node.js >= 18.0.0
+- **Docker** (required for running upstream GitHub MCP server)
 
 ---
 
@@ -26,18 +31,18 @@ GitHub MCP (`@modelcontextprotocol/server-github`) exposes approximately 100 too
 │                                                             │
 │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐     │
 │  │ MCP Server  │───▶│ Tool Filter │───▶│ MCP Client  │     │
-│  │ (stdio)     │    │ (whitelist) │    │ (child proc)│     │
+│  │ (stdio)     │    │ (whitelist) │    │ (Docker)    │     │
 │  └─────────────┘    └─────────────┘    └─────────────┘     │
 │         ▲                                     │             │
 │         │              config.yaml            │             │
 │         │              (allowedTools)         ▼             │
 └─────────┼───────────────────────────────────────────────────┘
           │                                     │
-          │ MCP Protocol (stdio)                │ spawn
+          │ MCP Protocol (stdio)                │ spawn Docker
           │                                     ▼
           │           ┌───────────────────────────────────────┐
-          │           │  @modelcontextprotocol/server-github  │
-          │           │  (Original GitHub MCP)                │
+          │           │  github/github-mcp-server (Docker)    │
+          │           │  ghcr.io/github/github-mcp-server     │
           │           │  ~100 tools                           │
           │           └───────────────────────────────────────┘
           │
@@ -104,14 +109,17 @@ allowedTools:
   - list_commits
   - get_commit
 
-# Upstream MCP server configuration
+# Upstream MCP server configuration (Docker)
+# https://github.com/github/github-mcp-server
 upstream:
-  # Execution command
-  command: npx
-  # Command arguments
+  command: docker
   args:
-    - "-y"
-    - "@modelcontextprotocol/server-github"
+    - "run"
+    - "-i"
+    - "--rm"
+    - "-e"
+    - "GITHUB_PERSONAL_ACCESS_TOKEN"
+    - "ghcr.io/github/github-mcp-server"
 ```
 
 ### Configuration Loading Priority
@@ -655,8 +663,8 @@ class LightweightGitHubServer {
 
 ```typescript
 // Responsibilities:
-// - Launch original GitHub MCP as a child process
-// - Communicate with child process as MCP Client
+// - Launch github/github-mcp-server via Docker
+// - Communicate with Docker container as MCP Client
 // - Proxy tool list retrieval and tool execution
 
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
@@ -833,7 +841,7 @@ function loadConfig(configPath?: string): Config {
    │
 3. Initialize UpstreamClient
    │
-4. Launch upstream MCP (server-github) as child process
+4. Launch upstream MCP (github/github-mcp-server) via Docker
    │
 5. Establish connection with upstream MCP
    │
